@@ -364,13 +364,68 @@ document.addEventListener("DOMContentLoaded", () => {
     const faucetBtn = document.getElementById('faucet-btn');
 
     // Безопасный экспорт расширения Phantom
-
     const getProvider = () => {
         if (window.solanaAdapter && window.solanaAdapter.provider) {
             return window.solanaAdapter.provider;
         }
         return window.phantom?.solana || window.solflare || null;
     };
+
+    // --- НОВАЯ ЛОГИКА ДЛЯ КНОПКИ CONNECT WALLET ---
+    if (connectWalletBtn) {
+        connectWalletBtn.addEventListener('click', async () => {
+            const provider = getProvider();
+            
+            if (provider) {
+                try {
+                    connectWalletBtn.innerText = "Connecting...";
+                    connectWalletBtn.disabled = true;
+                    
+                    // Запрашиваем подключение у расширения
+                    const resp = await provider.connect();
+                    const pubKey = resp.publicKey.toString();
+                    
+                    // Обновляем UI
+                    connectedWallet = pubKey;
+                    console.log("Wallet connected via button:", connectedWallet);
+                    
+                    if (userWalletText) {
+                        userWalletText.innerText = connectedWallet.slice(0, 4) + '...' + connectedWallet.slice(-4);
+                        userWalletText.style.color = '#00ffcc';
+                    }
+                    
+                    connectWalletBtn.innerText = "Connected";
+                    connectWalletBtn.style.background = "#28a745";
+                    connectWalletBtn.style.borderColor = "#28a745";
+                    
+                    if (faucetContainer) faucetContainer.style.display = 'block';
+                    if (topupBtn) topupBtn.disabled = false;
+
+                    // Отправляем данные на бэкенд для линковки
+                    try {
+                        await fetch('/api/user/link_wallet', {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ tg_id: tgId, solana_wallet: connectedWallet })
+                        });
+                        fetchUserProfile();
+                    } catch(e) {
+                        console.error("Failed to link wallet to backend:", e);
+                    }
+
+                } catch (err) {
+                    console.error("Connection cancelled or failed", err);
+                    connectWalletBtn.innerText = "Connect Wallet";
+                    connectWalletBtn.disabled = false;
+                }
+            } else {
+                alert("Пожалуйста, установи Phantom Wallet!");
+                window.open("https://phantom.app/", "_blank");
+                connectWalletBtn.innerText = "Connect Wallet";
+                connectWalletBtn.disabled = false;
+            }
+        });
+    }
 
     const checkWalletConnectState = async () => {
         if (!window.reownModal) return;
@@ -535,9 +590,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================================
     // 9. ГЕНЕРАЦИЯ VPN КЛЮЧА
-    // ==========================================
-    // ==========================================
-    // 9. ГЕНЕРАЦИЯ VPN КЛЮЧА (ОБНОВЛЕНО)
     // ==========================================
     const generateBtn = document.getElementById('generate-vpn-btn');
 

@@ -153,12 +153,16 @@
 
             <!-- WALLET STATUS -->
             <div class="feature-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; min-width: 300px; border-color: #512da8;">
-                <div>
-                    <p style="color: #888; margin-bottom: 5px;">Solana Devnet Wallet</p>
-                    <p id="solana-wallet-address" style="color: #aaa; font-family: monospace; font-size: 0.9rem;">Not connected</p>
-                </div>
-                <appkit-button></appkit-button>
+         <div>
+              <p style="color: #888; margin-bottom: 5px;">Solana Devnet Wallet</p>
+              <p id="solana-wallet-address" style="color: #aaa; font-family: monospace; font-size: 0.9rem;">Not connected</p>
+           </div>
+    
+           <div style="display: flex; gap: 10px;">
+             <appkit-button></appkit-button>
+              <button id="connect-wallet-btn" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">Connect Wallet</button>
             </div>
+        </div>
 
             <!-- FAUCET (КРАН) - ДЛЯ ПРЕЗЕНТАЦИИ CEO -->
             <div id="faucet-container" class="feature-card" style="margin-bottom: 20px; display: none; padding: 15px 20px; border-color: #ffaa00; background: rgba(255, 170, 0, 0.03);">
