@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QUONION | DePIN Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- П��дключаем Solana Web3 SDK для подписи транзакций кошельками -->
+    <script src="https://unpkg.com/@solana/web3.js@1.95.2/lib/index.iife.min.js"></script>
+    <script src="appkit-bundle.js"></script>
+
+    </head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-container">QUONION</div>
+        <div style="display: flex; gap: 10px;">
+            <button class="nav-btn home-button-active" data-target="HOME">HOME</button>
+            <button class="nav-btn" data-target="NODES">NODES</button>
+            <button class="nav-btn" data-target="VPN">VPN</button>
+        </div>
+    </header>
+
+    <!-- TAB 1: HOME (LANDING) -->
+    <main id="HOME" style="display: block;">
+        <section class="hero">
+            <div id="planet-container">
+                <canvas id="planet-canvas"></canvas>
+            </div>
+            <div class="hero-content">  
+                <h1>QUONION</h1>
+                <p class="heroP">Next-generation decentralized P2P overlay network. Tor-level security with HTTP/3 speed.</p>
+                <div class="cta-group">
+                    <button class="btn btn-primary" onclick="document.querySelector('[data-target=NODES]').click()">Deploy Node</button>
+                    <button class="btn btn-secondary" onclick="document.querySelector('[data-target=VPN]').click()">Get IP</button>
+                </div>
+            </div>  
+        </section>
+
+        <!-- NETWORK STATS & CHART -->
+        <section class="features" style="border-top: none;">
+            <h2 data-aos="fade-right" class="section-title">Network Status</h2>
+            <p class="section-subtitle" data-aos="fade" data-aos-delay="100">Live bandwidth statistics of the Quonion infrastructure.</p>
+            
+            <div class="features-grid" style="margin-bottom: 40px;">
+                <div data-aos="fade-up" class="feature-card" style="text-align: center; padding: 20px;">
+                    <h3 style="color: #666; font-size: 1rem; margin-bottom: 10px;">ACTIVE NODES</h3>
+                    <p id="stat-nodes" style="font-size: 2.5rem; font-weight: bold; color: #fff;">0</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100" class="feature-card" style="text-align: center; padding: 20px;">
+                    <h3 style="color: #666; font-size: 1rem; margin-bottom: 10px;">ROUTED (GB)</h3>
+                    <p id="stat-traffic" style="font-size: 2.5rem; font-weight: bold; color: #fff;">0.00</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200" class="feature-card" style="text-align: center; padding: 20px;">
+                    <h3 style="color: #666; font-size: 1rem; margin-bottom: 10px;">NODE RUNNERS</h3>
+                    <p id="stat-users" style="font-size: 2.5rem; font-weight: bold; color: #fff;">0</p>
+                </div>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" style="width: 100%; height: 300px; padding: 20px;">
+                <canvas id="networkChart"></canvas>
+            </div>
+        </section>
+
+        <!-- UNDER THE HOOD -->
+        <section class="features" id="features">
+            <h2 data-aos="fade-right" class="section-title">Under the Hood</h2>
+            <p class="section-subtitle" data-aos="fade" data-aos-delay="300">Architecture built to bypass any censorship without losing speed.</p>
+            <div class="features-grid">
+                <div data-aos="fade-right" class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <h3>Async Rust (Tokio)</h3>
+                    <p>Maximum performance and bulletproof memory safety. Processing millions of async requests with zero latency.</p>
+                </div>
+                <div data-aos="fade-up" class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                    <h3>QUIC (UDP) Transport</h3>
+                    <p>Forget TCP Head-of-Line Blocking. Our network remains stable even where standard VPNs and Tor fall to deep packet inspection.</p>
+                </div>
+                <div data-aos="fade-left" class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <h3>Perfect Forward Secrecy</h3>
+                    <p>3-layer end-to-end encryption (X25519). Session keys are rotated on the fly and destroyed immediately.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMANDS -->
+        <section class="testnet" id="testnet">
+            <div class="status-badge"><div class="status-dot"></div>Incentivized Testnet is Live</div>
+            <h2 data-aos="fade-right" class="section-title">Join the Infrastructure</h2>
+            <p class="section-subtitle" data-aos="fade" data-aos-delay="300">Run a node via terminal on your PC or VPS, share unused bandwidth, and accumulate revenue from routed traffic.</p>
+            
+            <div data-aos="fade-up" class="terminal-box">
+                <p class="terminalText">Windows</p>
+                <div class="code" >iwr -useb http://quonion.xyz/install.ps1 | iex</div>
+                <button class="copy-btn copy-generic" title="Copy command">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+            </div>
+            <div data-aos="fade-up" class="terminal-box">
+                <p class="terminalText">Linux, macOS</p>
+                <div class="code">curl -sSL http://quonion.xyz/downloads/install.sh | sudo bash</div>
+                <button class="copy-btn copy-generic" title="Copy command">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+            </div>
+            <p class="terminal-note" style="color: var(--text-muted); margin-top: 10px;" data-aos="fade" data-aos-delay="300">Upon launch, the script will ask for your personal UUID (copy it from the NODES tab).</p>
+        </section>
+    </main>
+
+    <canvas id="starfield" style="display:none; position:fixed; top:0; left:0; z-index:-1;"></canvas>
+
+    <!-- TAB 2: NODES (HOSTING) -->
+    <main id="NODES" style="display: none; padding-top: 100px;">
+        <section style="border: none; text-align: left; padding: 20px 5%;">
+            <h2 class="section-title">Node Runner Dashboard</h2>
+            <p class="section-subtitle">Monitor your servers and naturally earn from routed network traffic.</p>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
+                <div class="feature-card" style="flex: 1; min-width: 250px;">
+                    <p style="color: #888;">Total Node Earnings</p>
+                    <h2 id="my-earnings" style="font-size: 2.5rem; color: #28a745;">$ 0.00</h2>
+                </div>
+            </div>
+
+            <div class="terminal-box" style="margin-bottom: 40px; max-width: 100%;">
+                <p class="terminalText" style="flex-basis: auto; width:120px;">YOUR UUID:</p>
+                <div class="code" id="my-uuid" style="color: #00ffff;">Loading...</div>
+                <button class="copy-btn copy-generic">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+            </div>
+            
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Enter this UUID during the node setup to link it to your account and earn 80% of the traffic value.</p>
+
+            <h3 style="margin-bottom: 20px;">My Active Nodes:</h3>
+            <div id="nodes-list" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <p style="color: #666;">Loading data...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- TAB 3: VPN (CLIENTS) -->
+    <main id="VPN" style="display: none; padding-top: 100px;">
+        <section style="border: none; text-align: left; padding: 20px 5%;">
+            <h2 class="section-title">Anonymous Access</h2>
+            <p class="section-subtitle">Payments go directly to node operators.</p>
+
+            <!-- WALLET STATUS -->
+            <div class="feature-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; min-width: 300px; border-color: #512da8;">
+                <div>
+                    <p style="color: #888; margin-bottom: 5px;">Solana Devnet Wallet</p>
+                    <p id="solana-wallet-address" style="color: #aaa; font-family: monospace; font-size: 0.9rem;">Not connected</p>
+                </div>
+                <appkit-button></appkit-button>
+            </div>
+
+            <!-- FAUCET (КРАН) - ДЛЯ ПРЕЗЕНТАЦИИ CEO -->
+            <div id="faucet-container" class="feature-card" style="margin-bottom: 20px; display: none; padding: 15px 20px; border-color: #ffaa00; background: rgba(255, 170, 0, 0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <p style="color: #ffaa00; font-weight: bold; margin-bottom: 5px;">🎉 Presentation Faucet Ready</p>
+                        <p style="color: #888; font-size: 0.85rem;">Instantly request 100 devnet $QUON to your Phantom wallet and server balance.</p>
+                    </div>
+                    <button id="faucet-btn" class="btn" style="background: #ffaa00; color: #000; font-weight: bold; padding: 8px 15px; font-size: 0.9rem; border: none; border-radius: 4px; cursor: pointer;">Get 100 $QUON</button>
+                </div>
+            </div>
+
+            <!-- BALANCE BOX -->
+            <div class="feature-card" style="margin-bottom: 30px; display: inline-block; min-width: 300px;">
+                <p style="color: #888;">My VPN Balance (Internal)</p>
+                <h2 id="vpn-balance" style="font-size: 2.5rem;">$ 0.00</h2>
+                
+                <button id="topup-btn" class="btn btn-secondary" style="margin-top: 15px; width: 100%; display: none;">Top Up $QUON from Wallet</button>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <button id="generate-vpn-btn" class="btn btn-primary" style="width: 100%; max-width: 300px;">Connect ($0.05 / GB)</button>
+            </div>
+            
+            <div id="vless-container" class="terminal-box" style="display: none; border-color: #28a745; max-width: 100%;">
+                <p class="terminalText" style="flex-basis: auto; width: 100px;">HIDDIFY:</p>
+                <div class="code" id="vless-key" style="color: #28a745;">...</div>
+                <button class="copy-btn copy-generic">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+            </div>
+            <p id="vpn-error" style="color: #ff4444; display: none; margin-top: 10px;"></p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo-container">QUONION</div>
+        <div class="footer-links">
+            <a href="#" target="_blank">Twitter (X)</a>
+            <a href="#" target="_blank">Documentation</a>
+            <a href="#" target="_blank">GitHub</a>
+        </div>
+        <div class="copyright">© 2026 Quonion Network. All rights reserved.</div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
